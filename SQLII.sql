@@ -213,3 +213,105 @@ DELETE FROM practice_delete WHERE type = 'silver';
 
 DELETE FROM practice_delete WHERE value = 150;
 
+
+
+
+
+
+
+
+
+
+
+
+
+-- CREATE TABLE users (
+--   user_id SERIAL PRIMARY KEY,
+--   user_name VARCHAR(50),
+--   user_email VARCHAR(100)
+-- )
+-- CREATE TABLE products (
+--   product_id SERIAL PRIMARY KEY,
+--   product_name VARCHAR(100),
+--   product_price NUMERIC
+-- )
+-- CREATE TABLE orders (
+--   order_id SERIAL PRIMARY KEY,
+--   order_quantity INTEGER,
+--   order_total NUMERIC,
+--   FOREIGN KEY(order_id) REFERENCES orders(order_id)
+-- )
+
+
+
+-- INSERT INTO users (user_name, user_email)
+-- VALUES ('David', 'David@gtg')
+-- INSERT INTO users (user_name, user_email)
+-- VALUES ('Tom', 'Tom@gtg')
+-- INSERT INTO users (user_name, user_email)
+-- VALUES ('Mark', 'Mark@gtg')
+
+
+-- SELECT * FROM users
+
+
+-- INSERT INTO products (product_name, product_price)
+-- VALUES ('Taco', 700)
+-- INSERT INTO products (product_name, product_price)
+-- VALUES ('Brisket', 20)
+-- INSERT INTO products (product_name, product_price)
+-- VALUES ('Strawberry', 11)
+
+
+
+-- SELECT * FROM products
+
+
+
+-- INSERT INTO orders (order_quantity, order_total)
+-- VALUES (5, 200)
+-- INSERT INTO orders (order_quantity, order_total)
+-- VALUES (2, 50)
+-- INSERT INTO orders (order_quantity, order_total)
+-- VALUES (12, 79)
+
+
+
+-- SELECT * FROM orders
+
+
+------Get all products for the first order.------
+SELECT order_quantity FROM orders WHERE order_id = 1
+
+
+------Get all orders.------
+SELECT * FROM orders
+
+
+------Get the total cost of an order ( sum the price of all products on an order ).------
+SELECT SUM(o.order_quantity * p.product_price) FROM orders AS o
+INNER JOIN products AS p
+ON o.order_id = p.product_id
+WHERE order_id = 1
+
+
+------Add a foreign key reference from orders to users.------
+ALTER TABLE users
+ADD COLUMN order_id INTEGER REFERENCES orders(order_id)
+
+
+------Update the orders table to link a user to each order.------
+UPDATE users 
+SET order_id = user_id;
+SELECT * FROM users
+
+
+------Get all orders for a user.------
+SELECT * FROM users
+WHERE order_id = 1
+
+
+------Get how many orders each user has.------
+SELECT COUNT(*) FROM users
+WHERE order_id = 1
+
